@@ -1,0 +1,23 @@
+# Self work files
+oregami_proc*
+trial*
+
+# Python non-code
+*.pyc
+*egg-info/
+
+# Ida files
+*.idb
+*.id0
+*.id1
+*.nam
+*.til
+*.i64
+*.id2
+*.dmp
+
+# PyCharm
+.idea/
+
+# Old files
+*old.*
