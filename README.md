@@ -1,4 +1,5 @@
 # Oregami
+![](oregami.gif)
 > """  
 > What is this register used for?  
 > Hmm.. I'll just rename it to veryuniquename, do a textual search, and find all references!  
