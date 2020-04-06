@@ -530,11 +530,17 @@ def get_reg_from_user(orig_ea):
 ##############
 
 
-def func_get_call_ea(ea):
+def func_get_call_ea(ea=None):
+    ea = ea or idc.get_screen_ea()
+
     func_eas = []
     for xref in sark.Line(ea).xrefs_from:
         # if it is not a code xref, skip
         if xref.iscode == 0:
+            continue
+
+        # if it is the next line, skip
+        if xref.to == sark.Line(ea).next:
             continue
 
         # if it is code, but not a func - hard to parse correctly. Return err.
