@@ -5,10 +5,22 @@ from oregami.reg_utils import *
 
 def rf_settype(rf, type_name):
     for insn in rf.get_noinit_instructions():
+        done_offset = False
+        need_offset = False
         for opnd in insn.operands:
             if opnd.uf_is_read and (not opnd.uf_is_write) and \
                     (not opnd.uf_is_implicit):
-                set_type(insn.ea, opnd.n, type_name)
+                need_offset = True
+                if opnd.type.name == 'Memory_Displacement':
+                    set_type(insn.ea, opnd.n, type_name)
+                    done_offset = True
+        if need_offset and (not done_offset):
+            # probably another operand is an immediate value which needs this to be applied to it.
+            # May have false positives
+            for opnd in insn.operands:
+                if opnd.type.name == 'Immediate_Value':
+                    set_type(insn.ea, opnd.n, type_name)
+                    break
 
 
 ##################

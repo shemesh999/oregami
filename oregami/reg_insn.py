@@ -3,7 +3,7 @@ from .reg_utils import *
 # TODOS:
 # - Add special handling which returns actual regs - Done.
 # - Maybe add caching also to lines and instructions
-
+# - Use IDAs is_call_insn
 
 class RegOperand(sark.code.instruction.Operand):
     """

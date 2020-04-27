@@ -9,7 +9,9 @@ import ida_frame
 import ida_funcs
 from functools import reduce
 from .sark_bc import *
-
+import os
+import re
+import sys
 
 # This class helps configuring the usage of the oregami plugin
 class OregamiConf(object):
@@ -27,12 +29,44 @@ class OregamiConf(object):
     def proc(self):
         proc_name = idaapi.get_inf_structure().procName.lower()
 
+        # If exists, create a dictionary of the extra processor files paths
+        curr_dir = os.path.dirname(os.path.abspath(__file__))
+        proc_list_path = os.path.join(curr_dir, 'processors.list')
+        extra_processor_dict = dict()
+
+        if os.path.isfile(proc_list_path):
+            try:
+                with open(proc_list_path, 'rb') as f:
+                    for line in f:
+                        line = line.decode('utf-8')
+                        # Copied this style from sark's plugin_loader.py
+                        # Use `#` for comments
+                        if line.startswith("#"):
+                            continue
+                        # Remove trailing spaces and newlines, then normalize to avoid duplicates.
+                        path = os.path.normpath(line.strip())
+                        file_name = path.split('\\')[-1]
+                        m = re.match(r'(.*\\)?(.*)_proc.py', path)
+                        if m is not None:
+                            list_proc_name = m.group(2)
+                            extra_processor_dict[list_proc_name] = path
+                        else:
+                            self.logger.error('Wrong processor module file name "{}"'.format(path))
+            except IOError:
+                pass
+
+
         # In case the processor changed - loading an idb after the plugin was already loaded
         if proc_name == self._proc_name:
             return self._proc
 
         try:
-            proc_module = importlib.import_module('oregami.processors.{}_proc'.format(proc_name))
+            if proc_name in extra_processor_dict:
+                proc_path = extra_processor_dict[proc_name]
+                sys.path.append(os.path.dirname(proc_path))
+                proc_module = importlib.import_module(os.path.basename(proc_path)[:-3])
+            else:
+                proc_module = importlib.import_module('oregami.processors.{}_proc'.format(proc_name))
             self._used_processor = getattr(proc_module, '{}Processor'.format(proc_name.capitalize()))
             self._proc = self._used_processor()
             logger.info('Using configuration for {} processor'.format(proc_name))

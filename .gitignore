@@ -21,3 +21,6 @@ trial*
 
 # Old files
 *old.*
+
+# Extra self processor files
+processors.list
