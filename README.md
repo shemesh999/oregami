@@ -14,6 +14,8 @@ Just Shift-X, and your troubles will go away!
 You may also re(g)name the register in the usage frame. Just Shift-N, and follow instructions!  
 Also - instead of changing the types of all the usages to a certain type, just Shift-T once.  
 
+And last but not least - if you want to set an offset (like doing Ctrl-R) to all usages of this register, just press Shift-R.
+
 Note: Sometimes there is already another plugin using Shift-T. Remove that plugin - you never used it before anyway :-).  
 
 ## Installation
@@ -44,6 +46,7 @@ Now, add to one of the plugins.list files:
 FULLPATH\oregami\oregami_plugin.py  
 FULLPATH\oregami\regname_plugin.py  
 FULLPATH\oregami\typeregter_plugin.py  
+FULLPATH\oregami\offreg_plugin.py
 
 Restart IDA, and the plugins should work.
 
