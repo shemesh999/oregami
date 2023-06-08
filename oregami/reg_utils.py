@@ -27,7 +27,7 @@ class OregamiConf(object):
 
     @property
     def proc(self):
-        proc_name = idaapi.get_inf_structure().procName.lower()
+        proc_name = idaapi.get_inf_structure().procname.lower()
 
         # If exists, create a dictionary of the extra processor files paths
         curr_dir = os.path.dirname(os.path.abspath(__file__))
@@ -73,7 +73,7 @@ class OregamiConf(object):
         except ImportError:
             self._used_processor = Processor
             self._proc = self._used_processor()
-            logger.info('Using default processor')
+            logger.info('Using default processor. Could not find configuration for "{}"'.format(proc_name))
 
         self._proc_name = proc_name
         return self._proc
