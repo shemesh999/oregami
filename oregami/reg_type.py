@@ -1,5 +1,5 @@
 import ida_nalt
-import ida_struct
+from oregami.ida_compat import compat_get_struc_id, compat_get_struc_name, compat_choose_struc
 from oregami.reg_utils import *
 
 
@@ -29,7 +29,7 @@ def rf_settype(rf, type_name):
 
 def set_type(ea, opnd_idx, type_name, off=0):
     logger.info("setting type ea={:x}, idx={}, type={}".format(ea, opnd_idx, type_name))
-    str_id = ida_struct.get_struc_id(type_name)
+    str_id = compat_get_struc_id(type_name)
     idc.op_stroff(ea, opnd_idx, str_id, off)
     ida_nalt.set_aflags(ea, ida_nalt.get_aflags(ea) | ida_nalt.AFL_ZSTROFF)
 
@@ -39,11 +39,11 @@ def get_type_from_user():
     #   'Please wait...' msgbox to jump and make the system freeze.
     orig_timeout = idaapi.set_script_timeout(0x7fffffff)
 
-    struct_type = ida_kernwin.choose_struc('Choose type')
+    struct_tid = compat_choose_struc('Choose type')
     idaapi.set_script_timeout(orig_timeout)
 
-    if struct_type is None:
+    if struct_tid is None:
         return None
 
-    type_name = ida_struct.get_struc_name(struct_type.id)
+    type_name = compat_get_struc_name(struct_tid)
     return type_name

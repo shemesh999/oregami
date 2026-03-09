@@ -10,6 +10,6 @@ setup(
     description='IDA plugins and scripts for analyzing register usage frame',
 
     install_requires=[
-        'sark', 'cachetools'
+        'sark'
     ],
 )

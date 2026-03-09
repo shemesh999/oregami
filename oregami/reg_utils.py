@@ -9,6 +9,7 @@ import ida_frame
 import ida_funcs
 from functools import reduce
 from .sark_bc import *
+from .ida_compat import compat_get_procname
 import os
 import re
 import sys
@@ -27,7 +28,7 @@ class OregamiConf(object):
 
     @property
     def proc(self):
-        proc_name = idaapi.get_inf_structure().procname.lower()
+        proc_name = compat_get_procname().lower()
 
         # If exists, create a dictionary of the extra processor files paths
         curr_dir = os.path.dirname(os.path.abspath(__file__))

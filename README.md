@@ -21,15 +21,23 @@ Note: Sometimes there is already another plugin using Shift-T. Remove that plugi
 ## Installation
 ### Prerequisites
 This plugin uses sark to interact with the IDA scripts in a comfortable way, and cachetools to cache the frame scan which makes this a whole of a lot faster.
- 
-[For python2]  
-pip install sark  
-pip install cachetools  
 
+### IDA version compatibility
+Oregami supports both IDA 7.x/8.x and IDA 9.0+.  
+If you are using IDA 9, make sure you have an up-to-date version of sark that supports IDA 9.
+
+Note: IDA 9 introduced its own Shift-X functionality. If you need to use IDA's built-in Shift-X instead of oregami's, you should change the oregami shortcut in the plugin file.
+
+### Python / sark setup
 [For python3]  
-If using python3 variant of IDA, you should instead run:  
-pip3 install -U git+https://github.com/tmr232/Sark.git#egg=Sark  
-pip3 install cachetools
+pip3 install sark
+
+[For python2]  
+If using python2 variant of IDA, you should instead run:
+pip2 install -U git+https://github.com/tmr232/Sark.git@IDA-6.x#egg=Sark
+
+Note that python2 is not actively supported (as IDA mostly moved to python3, and so did I), so this may not work.
+
 
 ### Clone the repo
 git clone https://github.com/shemesh999/oregami

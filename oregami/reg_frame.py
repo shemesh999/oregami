@@ -1,6 +1,6 @@
 import struct
 import hashlib
-from cachetools import cached, LRUCache
+from functools import lru_cache
 
 from .reg_insn import *
 
@@ -301,7 +301,7 @@ class RegFrame(object):
         return rf
 
     @staticmethod
-    @cached(cache=LRUCache(maxsize=1000))
+    @lru_cache(maxsize=1000)
     def _cached_new(cls, orig_ea, reg, init_stage_bool, f_hash):
         if RegFrame._cached_rf is not None:
             return RegFrame._cached_rf
@@ -309,7 +309,7 @@ class RegFrame(object):
         return RegFrame._get_and_cache(cls, orig_ea, reg, init_stage_bool, RegFrame.DIR_BOTH, f_hash)
 
     @staticmethod
-    @cached(cache=LRUCache(maxsize=1000))
+    @lru_cache(maxsize=1000)
     def _cached_new_dir(cls, orig_ea, reg, init_stage_bool, direction, f_hash):
         if RegFrame._cached_rf is not None:
             return RegFrame._cached_rf
@@ -903,7 +903,7 @@ class RegFrame(object):
 _funcs_in_call_dive = []
 
 
-@cached(cache=LRUCache(maxsize=1000))
+@lru_cache(maxsize=1000)
 def rf_func_scan(ea, reg):
     global _funcs_in_call_dive
     if ea in _funcs_in_call_dive:
